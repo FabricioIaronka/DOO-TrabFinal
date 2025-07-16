@@ -16,14 +16,23 @@ public class VendaDAO {
         try (java.sql.Connection conn = Connection.conector(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                int vendaId = rs.getInt("id");
+                int vendaId = rs.getInt("id_venda");
 
                 // Se ainda não existe a venda no mapa, cria
                 if (!vendaMap.containsKey(vendaId)) {
+                    String idCli = rs.getString("id_cliente");
+                    int id;
+                    if (idCli != null) {
+                        id = Integer.parseInt(idCli);
+                    }
+                    else{
+                        id = -1;
+                    }
+                    
                     Venda venda = new Venda(
                             vendaId,
-                            rs.getInt("id_cliente"),
                             rs.getInt("id_usuario"),
+                            id,
                             rs.getTimestamp("data"),
                             0.0
                     );
@@ -96,24 +105,24 @@ public class VendaDAO {
     }
     
     public void create(Venda venda) throws SQLException {
-    String getMaxIdSQL = "SELECT MAX(id) AS max_id FROM venda";
-    String insertSQL = "INSERT INTO venda (id, id_cliente, id_usuario, id_produto, quantidade, preco_unitario, data) " +
+    String getMaxIdSQL = "SELECT MAX(id_venda) AS max_id FROM venda";
+    String insertSQL = "INSERT INTO venda (id_venda, id_cliente, id_usuario, id_produto, quantidade, preco_unitario, data) " +
                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String updateEstoqueSQL = "UPDATE produto SET quantidade = quantidade - ? WHERE id = ?";
 
     try (java.sql.Connection conn = Connection.conector()) {
-        conn.setAutoCommit(false); // Transação
+        conn.setAutoCommit(false); 
 
         int nextId;
 
-        // Obtém o próximo ID de venda
         try (PreparedStatement stmtMax = conn.prepareStatement(getMaxIdSQL);
              ResultSet rs = stmtMax.executeQuery()) {
-
             nextId = (rs.next()) ? rs.getInt("max_id") + 1 : 1;
         }
 
-        // Insere os itens da venda
-        try (PreparedStatement stmtInsert = conn.prepareStatement(insertSQL)) {
+        try (PreparedStatement stmtInsert = conn.prepareStatement(insertSQL);
+             PreparedStatement stmtUpdateEstoque = conn.prepareStatement(updateEstoqueSQL)) {
+
             for (ItemVenda item : venda.getItens()) {
                 stmtInsert.setInt(1, nextId);
                 stmtInsert.setInt(3, venda.getIdUsuario());
@@ -121,22 +130,26 @@ public class VendaDAO {
                 stmtInsert.setInt(5, item.getQuantidade());
                 stmtInsert.setDouble(6, item.getPrecoUnitario());
                 stmtInsert.setTimestamp(7, new Timestamp(venda.getData().getTime()));
-                
-                if (venda.getIdCliente() == -1){
-                    stmtInsert.setString(2, null);
-                }
-                else{
+
+                if (venda.getIdCliente() == -1) {
+                    stmtInsert.setNull(2, java.sql.Types.INTEGER);
+                } else {
                     stmtInsert.setInt(2, venda.getIdCliente());
                 }
 
                 stmtInsert.addBatch();
+
+                stmtUpdateEstoque.setInt(1, item.getQuantidade());
+                stmtUpdateEstoque.setInt(2, item.getProdutoId());
+                stmtUpdateEstoque.addBatch();
             }
 
             stmtInsert.executeBatch();
+            stmtUpdateEstoque.executeBatch();
         }
 
-        conn.commit();
-        venda.setId(nextId); // Atualiza o ID da venda após inserir
+        conn.commit(); 
+        venda.setId(nextId);
     }
 }
 

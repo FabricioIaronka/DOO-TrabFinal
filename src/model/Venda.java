@@ -27,6 +27,8 @@ public class Venda {
         this.data = data;
         this.total = total;
         this.itens = new ArrayList<>();
+        
+        calcTotal();
     }
 
     public Venda(int idCliente, int idUsuario, double total, List<ItemVenda> itens) {
@@ -37,6 +39,14 @@ public class Venda {
         this.itens = itens;
     }
 
+    private void calcTotal(){
+        double sum = 0;
+        for(ItemVenda iv : this.itens){
+            sum += iv.getPrecoUnitario()*iv.getQuantidade();
+        }
+        
+        this.total = sum;
+    }
 
     public Venda(int idUsuario) {
     }

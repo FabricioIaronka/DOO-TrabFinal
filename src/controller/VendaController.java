@@ -32,7 +32,7 @@ public class VendaController {
         }
     }
     
-    public void getAll() {
-        
+    public List<Venda> getAll() throws SQLException{
+        return this.vendaDAO.getAll();
     }
 }

@@ -1,3 +1,4 @@
+drop database estoque_vendas;
 -- Criação do banco de dados
 CREATE DATABASE IF NOT EXISTS estoque_vendas DEFAULT CHARACTER SET utf8mb4;
 USE estoque_vendas;
@@ -32,6 +33,7 @@ CREATE TABLE produto (
 -- Tabela de vendas (inclui dados da venda e os itens vendidos)
 CREATE TABLE venda (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    id_venda INT NOT NULL,
     id_cliente INT,
     id_usuario INT NOT NULL,
     id_produto INT ,
@@ -45,4 +47,4 @@ CREATE TABLE venda (
 );
 
 insert into usuario (nome_usuario, senha, nivel) Values ('admin', 123,'administrador');
-SELECT * FROM cliente;
+SELECT * FROM venda;

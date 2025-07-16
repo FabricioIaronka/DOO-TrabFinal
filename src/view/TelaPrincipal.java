@@ -673,6 +673,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 else{
                     vc.create(this.user.getId(), -1, total, itensVenda);
                 }
+                
+                TextoClienteCPF.setText("");
+                this.carrinho = new ArrayList<>();
+
+                updateTabelaCarrinho();
             } 
             catch (SaleInvalid e) {
                 JOptionPane.showMessageDialog(
@@ -728,7 +733,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         updateListaEstoque();
         updateListaClientes();
-        
+        updateTabelaVendas();
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void BotaoDeletarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoDeletarProdActionPerformed
@@ -877,17 +882,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
         return null;
     }
     
-    private getVendas(){
+    private List<Venda> getVendas(){
         VendaController vc = new VendaController();
-        
-        
+        try{
+            return vc.getAll();
+        }
+        catch (SQLException e){
+            JOptionPane.showMessageDialog(
+                        this,
+                        e.getMessage(),
+                        "Erro no banco de dados",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            return null;
+        }
     }
     
     private void updateTabelaVendas() {
         DefaultTableModel modelo = (DefaultTableModel) tabelaRegistro.getModel();
             modelo.setRowCount(0);
 
-            for (Venda v : this.listaEstoque) {
+            for (Venda v : getVendas()) {
                 modelo.addRow(new Object[]{
                     v.getId(),
                     v.getIdUsuario(),
