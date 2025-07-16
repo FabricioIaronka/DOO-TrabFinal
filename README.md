@@ -51,14 +51,14 @@ Este é um sistema desktop desenvolvido em **Java**, utilizando o padrão **MVC*
 1. **Clone o repositório:**
 
    ```bash
-   git clone https://github.com/seu-usuario/sistema-estoque-vendas.git
+   git clone https://github.com/FabricioIaronka/DOO-TrabFinal
    ```
 
 2. **Importe o projeto na sua IDE** (NetBeans recomendado).
 
 3. **Execute o script SQL** para criar o banco de dados:
 
-   - O script pode estar em: `sql/create_database.sql`
+   - O script pode estar em: `util.Connection/create_database.sql`
 
 4. **Configure a conexão com o banco** na classe `util.Connection`:
 
