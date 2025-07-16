@@ -4,6 +4,10 @@
  */
 package view;
 
+import controller.UsuarioController;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author alunolages
@@ -30,14 +34,14 @@ public class CadastrarUsuario extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         BotaoCancelar = new javax.swing.JButton();
-        BotaoLogin = new javax.swing.JButton();
-        TextoSenha = new javax.swing.JTextField();
+        BotaoAddUser = new javax.swing.JButton();
         TextoNomeUsuario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        TextoSenha1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        TextoSenha = new javax.swing.JPasswordField();
+        TextoSenha2 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,19 +57,13 @@ public class CadastrarUsuario extends javax.swing.JFrame {
             }
         });
 
-        BotaoLogin.setBackground(new java.awt.Color(48, 131, 214));
-        BotaoLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        BotaoLogin.setForeground(new java.awt.Color(255, 255, 255));
-        BotaoLogin.setText("CRIAR USUARIO");
-        BotaoLogin.addActionListener(new java.awt.event.ActionListener() {
+        BotaoAddUser.setBackground(new java.awt.Color(48, 131, 214));
+        BotaoAddUser.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        BotaoAddUser.setForeground(new java.awt.Color(255, 255, 255));
+        BotaoAddUser.setText("CRIAR USUARIO");
+        BotaoAddUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotaoLoginActionPerformed(evt);
-            }
-        });
-
-        TextoSenha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoSenhaActionPerformed(evt);
+                BotaoAddUserActionPerformed(evt);
             }
         });
 
@@ -77,13 +75,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
 
         jLabel2.setText("Senha");
 
-        jLabel4.setText("Nova Senha");
-
-        TextoSenha1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextoSenha1ActionPerformed(evt);
-            }
-        });
+        jLabel4.setText("Confirma senha");
 
         jLabel3.setText("Nível");
 
@@ -97,29 +89,24 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                 .addGap(80, 80, 80)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(TextoNomeUsuario)
-                                .addComponent(TextoSenha)
-                                .addComponent(TextoSenha1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(BotaoLogin)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2))
-                                .addGap(185, 185, 185)))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(TextoSenha2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextoSenha, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TextoNomeUsuario)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(BotaoAddUser)))
                         .addGap(72, 72, 72))))
         );
         layout.setVerticalGroup(
@@ -136,7 +123,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TextoSenha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(TextoSenha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -144,7 +131,7 @@ public class CadastrarUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotaoCancelar)
-                    .addComponent(BotaoLogin))
+                    .addComponent(BotaoAddUser))
                 .addGap(55, 55, 55))
         );
 
@@ -152,69 +139,64 @@ public class CadastrarUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BotaoCancelarActionPerformed
-
-    private void BotaoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoLoginActionPerformed
         Login login = new Login();
         login.setVisible(true);
-        
-        dispose();
-    }//GEN-LAST:event_BotaoLoginActionPerformed
 
-    private void TextoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoSenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextoSenhaActionPerformed
+        dispose();
+    }//GEN-LAST:event_BotaoCancelarActionPerformed
+
+    private void BotaoAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoAddUserActionPerformed
+        UsuarioController uc = new UsuarioController();
+        String username = TextoNomeUsuario.getText();
+        String senha = TextoSenha.getText();
+        String senha2 = TextoSenha2.getText();
+        String nivel = jComboBox1.getSelectedItem().toString();
+
+        if (senha.equals(senha2)) {
+            try {
+                uc.create(username, senha, nivel);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Usuario Criado",
+                        "Sucesso!",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+                Login login = new Login();
+                login.setVisible(true);
+
+                dispose();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        e.getMessage(),
+                        "Erro no banco de dados",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Senhas não coferem",
+                    "Erro na autenticação",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
+
+    }//GEN-LAST:event_BotaoAddUserActionPerformed
 
     private void TextoNomeUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoNomeUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TextoNomeUsuarioActionPerformed
 
-    private void TextoSenha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextoSenha1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextoSenha1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastrarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CadastrarUsuario().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotaoAddUser;
     private javax.swing.JButton BotaoCancelar;
-    private javax.swing.JButton BotaoLogin;
     private javax.swing.JTextField TextoNomeUsuario;
-    private javax.swing.JTextField TextoSenha;
-    private javax.swing.JTextField TextoSenha1;
+    private javax.swing.JPasswordField TextoSenha;
+    private javax.swing.JPasswordField TextoSenha2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

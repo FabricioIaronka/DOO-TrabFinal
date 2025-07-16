@@ -17,8 +17,7 @@ public class Usuario {
 
     public Usuario() {}
 
-    public Usuario(int id, String nomeUsuario, String senha, String nivel) {
-        this.id = id;
+    public Usuario(String nomeUsuario, String senha, String nivel) {
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;
         this.nivel = nivel;

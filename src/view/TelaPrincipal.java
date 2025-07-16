@@ -8,6 +8,7 @@ import controller.ClienteController;
 import controller.ProdutoController;
 import controller.VendaController;
 import exceptions.SaleInvalid;
+import java.awt.Component;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
         initComponents();
         this.setLocationRelativeTo(null);
+        setScreenForUser();
         
         this.carrinho = new ArrayList<>();
         
@@ -59,6 +61,29 @@ public class TelaPrincipal extends javax.swing.JFrame {
             calcularTotalCarrinho();
         }
     });
+    }
+    
+    public void setScreenForUser() {
+        if (!this.user.getNivel().equalsIgnoreCase("administrador")) {
+            if (this.user.getNivel().equalsIgnoreCase("vendedor")){
+                BotaoAddProd.setEnabled(false);
+                BotaoEditar.setEnabled(false);
+                BotaoDeletarProd.setEnabled(false);
+            }
+            else {
+                for(Component c : jPanel1.getComponents()){
+                    c.setVisible(false);
+                }
+                
+                for(Component c : jPanel3.getComponents()){
+                    c.setVisible(false);
+                }
+                
+                for(Component c : jPanel4.getComponents()){
+                    c.setVisible(false);
+                }
+            }
+        }
     }
 
     public List<Produto> getListaEstoque() {

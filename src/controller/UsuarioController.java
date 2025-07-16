@@ -25,4 +25,9 @@ public class UsuarioController {
         if (usuario != null) return usuario;
         else throw new LoginInvalid("Usuario ou Senha inválidos");
     }
+    
+    public void create(String user, String senha, String nivel) throws SQLException{
+        Usuario usuario = new Usuario(user, senha, nivel);
+        this.usuarioDAO.create(usuario);
+    }
 }

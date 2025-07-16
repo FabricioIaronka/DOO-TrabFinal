@@ -176,10 +176,43 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_newUserLabelMouseEntered
 
     private void newUserLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newUserLabelMouseClicked
-        CadastrarUsuario cadUser = new CadastrarUsuario();
-        cadUser.setVisible(true);
-        
-        dispose();
+        try {
+            UsuarioController uc = new UsuarioController();
+            String user = TextoNomeUsuario.getText();
+            String senha = TextoSenha.getText();
+            Usuario loggedUser = uc.login(user, senha);
+            
+            if(loggedUser.getNivel().equalsIgnoreCase("administrador")){
+                CadastrarUsuario cadUser = new CadastrarUsuario();
+                cadUser.setVisible(true);
+
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(
+                this,
+                "Seu nível de acesso não permite cadastrar usuários",
+                "Erro na autenticação",
+                JOptionPane.ERROR_MESSAGE
+            );
+            }
+        }
+        catch (LoginInvalid e){
+            JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Erro na autenticação",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                e.getMessage(),
+                "Erro no banco de dados",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_newUserLabelMouseClicked
 
     private void newUserLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newUserLabelMouseExited
